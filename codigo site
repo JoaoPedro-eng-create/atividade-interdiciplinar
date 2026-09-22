@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asfalto Certo | Entender a rua para construir cidades melhores</title>
+<meta name="description" content="Entenda como uma via é construída, por que ela se deteriora e como a pavimentação adequada contribui para cidades melhores.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =================================================================
+   ASFALTO CERTO — style.css (v2)
+   Identidade: sinalização viária, camadas de pavimento, texturas
+   de asfalto. Oswald (condensada, "placa de rua") + Inter (corpo).
+================================================================= */
+
+:root {
+  --near-black: #071521;
+  --petrol: #10283D;
+  --yellow: #FFC400;
+  --concrete: #F4F5F6;
+  --white: #FFFFFF;
+  --asphalt: #353A3F;
+  --text-muted: #5C6672;
+
+  --line: #E2E5E8;
+  --shadow-soft: 0 12px 32px rgba(7, 21, 33, 0.14);
+  --shadow-card: 0 4px 16px rgba(7, 21, 33, 0.08);
+
+  --font-display: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --max-width: 1400px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --header-h: 82px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
+body, h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--near-black);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.12;
+  color: var(--near-black);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+h2 { font-size: clamp(1.9rem, 2.7vw, 2.7rem); }
+h3 { font-size: clamp(1.1rem, 1.5vw, 1.3rem); text-transform: none; font-weight: 600; }
+p { color: var(--text-muted); }
+
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.skip-link {
+  position: absolute; left: -999px; top: 0;
+  background: var(--yellow); color: var(--near-black);
+  padding: 0.8rem 1.2rem; font-weight: 600; z-index: 1000;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+
+.container { max-width: var(--max-width); margin-inline: auto; padding-inline: 1.75rem; }
+
+.eyebrow {
+  font-family: var(--font-display);
+  color: var(--petrol);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.section-dark .eyebrow { color: var(--yellow); }
+
+/* ============ FAIXA / LINHA TRACEJADA (motivo de sinalização) ============ */
+.lane-divider {
+  height: 3px;
+  background-image: repeating-linear-gradient(90deg, var(--yellow) 0 28px, transparent 28px 48px);
+}
+.lane-line { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; z-index: 2;
+  background-image: repeating-linear-gradient(90deg, var(--yellow) 0 34px, transparent 34px 60px); }
+
+/* ============ BOTÕES ============ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.85rem 1.6rem; border-radius: 4px;
+  font-family: var(--font-display); font-weight: 600; font-size: 0.98rem;
+  text-transform: uppercase; letter-spacing: 0.02em;
+  border: 2px solid transparent;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+.btn-primary { background: var(--yellow); color: var(--near-black); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(255, 196, 0, 0.35); }
+.btn-outline { background: transparent; border-color: rgba(255,255,255,0.55); color: var(--white); }
+.section:not(.section-dark) .btn-outline,
+.section-tinted .btn-outline { border-color: var(--petrol); color: var(--petrol); }
+.btn-outline:hover { background: var(--petrol); color: var(--white); border-color: var(--petrol); }
+.btn-text {
+  background: none; border: none; padding: 0; color: var(--petrol);
+  font-family: var(--font-body); text-transform: none; font-weight: 600; font-size: 0.9rem;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.btn-text::after { content: '+'; font-size: 1.1rem; transition: transform 0.2s ease; }
+.btn-text[aria-expanded="true"]::after { content: '–'; }
+
+/* ============ HEADER ============ */
+.site-header {
+  position: sticky; top: 0; z-index: 500;
+  background: rgba(7, 21, 33, 0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: box-shadow 0.25s ease;
+}
+.site-header.is-scrolled { box-shadow: var(--shadow-soft); }
+.header-inner { height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.brand { display: flex; align-items: center; gap: 0.7rem; flex-shrink: 0; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-text strong { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: 0.02em; color: var(--white); }
+.brand-text small { color: rgba(255,255,255,0.55); font-size: 0.7rem; }
+
+.main-nav { display: flex; align-items: center; gap: 2.2rem; margin-left: auto; }
+.main-nav ul { display: flex; gap: 1.8rem; }
+.main-nav a:not(.btn) {
+  font-weight: 500; font-size: 0.96rem; color: rgba(255,255,255,0.85);
+  position: relative; padding-bottom: 4px;
+}
+.main-nav a:not(.btn)::after {
+  content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
+  background: var(--yellow); transition: width 0.2s ease;
+}
+.main-nav a:not(.btn):hover { color: var(--white); }
+.main-nav a:not(.btn):hover::after { width: 100%; }
+
+.menu-toggle { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; background: none; border: none; }
+.menu-toggle span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
+.menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ============ HERO ============ */
+.hero { position: relative; overflow: hidden; color: var(--white); }
+.hero-media { position: absolute; inset: 0; z-index: -1; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; }
+.hero-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,21,33,0.55) 0%, rgba(7,21,33,0.88) 75%, var(--near-black) 100%); }
+
+.hero-content { padding-block: 7rem 3.5rem; max-width: 900px; }
+.hero-content h1 { font-size: clamp(2.3rem, 4.6vw, 4rem); color: var(--white); }
+.hero-content .accent { color: var(--yellow); }
+.hero-lead { color: rgba(255,255,255,0.82); font-size: 1.1rem; max-width: 56ch; margin-top: 1.4rem; }
+.hero-actions { display: flex; gap: 1rem; margin-top: 2.2rem; flex-wrap: wrap; }
+
+.hero-indicators { position: relative; background: var(--near-black); padding-block: 2.6rem; }
+.hero-indicators-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; }
+.indicator { border-left: 2px solid var(--yellow); padding-left: 1rem; }
+.indicator-num { font-family: var(--font-display); color: rgba(255,255,255,0.35); font-size: 0.85rem; }
+.indicator h3 { color: var(--white); margin: 0.2rem 0 0.3rem; text-transform: uppercase; font-size: 1rem; }
+.indicator p { color: rgba(255,255,255,0.62); font-size: 0.88rem; }
+
+/* ============ SECTIONS GERAIS ============ */
+.section { padding-block: 6rem; }
+.section-tinted { background: var(--concrete); }
+.section-dark { background: var(--near-black); color: var(--white); }
+.section-dark h2, .section-dark h3 { color: var(--white); }
+.section-dark p:not(.eyebrow) { color: rgba(255,255,255,0.7); }
+
+.section-head { max-width: 760px; margin-bottom: 3rem; }
+.section-lead { font-size: 1.05rem; margin-top: 0.8rem; max-width: 64ch; }
+
+/* ============ DA RUA À CIDADE (fluxo) ============ */
+.flow-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: center; }
+.flow-chain { display: flex; flex-direction: column; }
+.flow-chain li {
+  display: flex; align-items: center; gap: 1rem;
+  padding-block: 0.9rem;
+  border-left: 2px dashed var(--yellow);
+  padding-left: 1.4rem;
+  margin-left: 8px;
+}
+.flow-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--petrol); margin-left: -1.55rem; flex-shrink: 0; border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--petrol); }
+.flow-dot-end { background: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
+.flow-label { font-family: var(--font-display); font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.01em; }
+.flow-label-end { color: var(--petrol); font-weight: 700; }
+
+/* ============ CROSS SECTION (camadas) ============ */
+.cross-section { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: stretch; }
+.cross-illustration {
+  position: relative;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem 2rem;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.cross-vehicle { position: absolute; top: 0.6rem; left: 50%; transform: translateX(-50%); color: var(--white); }
+.cross-layer {
+  border: none; border-radius: 6px;
+  padding: 1.4rem 1.2rem;
+  background: color-mix(in srgb, var(--layer-color) 22%, transparent);
+  border-left: 5px solid var(--layer-color);
+  color: var(--white);
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.cross-layer:hover, .cross-layer.is-active {
+  background: color-mix(in srgb, var(--layer-color) 42%, transparent);
+  transform: translateX(6px);
+}
+.cross-detail {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  align-self: center;
+}
+.cross-detail h3 { color: var(--yellow); font-size: 1.3rem; margin-bottom: 0.7rem; text-transform: none; }
+.cross-detail p { color: rgba(255,255,255,0.82); }
+
+/* ============ SINAIS / GALERIA PROBLEMAS ============ */
+.signal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.signal-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--white);
+}
+.signal-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+.signal-card img { width: 100%; height: 190px; object-fit: cover; }
+.signal-body { padding: 1.4rem 1.5rem 1.6rem; }
+.signal-body h3 { margin-bottom: 0.35rem; text-transform: uppercase; font-size: 1.05rem; }
+.signal-body > p:first-of-type { font-size: 0.92rem; margin-bottom: 0.9rem; }
+.signal-cause {
+  margin-top: 0.8rem; padding-top: 0.8rem;
+  border-top: 1px dashed var(--line);
+  font-size: 0.87rem; color: var(--near-black);
+}
+
+/* ============ COMO NASCE UM BURACO (stage) ============ */
+.stage-wrap { display: flex; align-items: center; gap: 1rem; }
+.stage-nav {
+  flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--white); border: 1px solid var(--line);
+  display: grid; place-items: center; color: var(--petrol);
+  box-shadow: var(--shadow-card);
+}
+.stage-nav:hover { background: var(--yellow); border-color: var(--yellow); color: var(--near-black); }
+.stage-track {
+  display: flex; gap: 1.2rem; overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-block: 0.4rem;
+  scrollbar-width: thin;
+}
+.stage-card {
+  scroll-snap-align: start;
+  flex: 0 0 260px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--yellow);
+  border-radius: var(--radius-md);
+  padding: 1.6rem;
+  box-shadow: var(--shadow-card);
+}
+.stage-num {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--petrol);
+  margin-bottom: 0.6rem;
+}
+.stage-card h3 { font-size: 1rem; margin-bottom: 0.5rem; text-transform: none; }
+.stage-card p { font-size: 0.88rem; }
+.stage-disclaimer { margin-top: 1.6rem; font-size: 0.88rem; max-width: 70ch; }
+
+/* ============ ÁGUA + ASFALTO ============ */
+.water-split { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: center; }
+.water-media { border-radius: var(--radius-lg); overflow: hidden; height: 480px; }
+.water-media img { height: 100%; width: 100%; object-fit: cover; }
+.water-diagram {
+  display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap;
+  font-family: var(--font-display); text-transform: uppercase; font-size: 1.2rem;
+  color: var(--white); margin: 1.4rem 0 1.6rem;
+}
+.water-arrow { color: var(--yellow); }
+.water-note { font-size: 0.95rem; margin-bottom: 0.7rem; }
+.water-tags { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+.water-tags li {
+  border: 1px solid rgba(255,196,0,0.5);
+  color: var(--yellow);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.water-quote {
+  border-left: 3px solid var(--yellow);
+  padding-left: 1.2rem;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  max-width: 52ch;
+}
+
+/* ============ TAPA-BURACO X RECUPERAÇÃO ============ */
+.vs-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.8rem; align-items: center; margin-bottom: 2.2rem; }
+.vs-card img { border-radius: var(--radius-md); height: 260px; width: 100%; object-fit: cover; margin-bottom: 1rem; }
+.vs-card h3 { text-transform: uppercase; font-size: 1.05rem; margin-bottom: 0.4rem; }
+.vs-card p { font-size: 0.92rem; }
+.vs-divider {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: var(--yellow);
+  -webkit-text-stroke: 1px var(--near-black);
+}
+.vs-question { background: var(--petrol); color: var(--white); border-radius: var(--radius-md); padding: 2rem; }
+.vs-question > p { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem; max-width: 55ch; color: var(--white); }
+.vs-answer { margin-top: 1.2rem; color: rgba(255,255,255,0.85); max-width: 68ch; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.2rem; }
+
+/* ============ TIMELINE (do material à rua) ============ */
+.timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.1rem; }
+.timeline li { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-card); position: relative; }
+.timeline-media { height: 110px; }
+.timeline-media img { height: 100%; width: 100%; object-fit: cover; }
+.timeline-num { position: absolute; top: 0.6rem; right: 0.7rem; background: var(--yellow); color: var(--near-black); font-family: var(--font-display); font-size: 0.85rem; padding: 0.15rem 0.5rem; border-radius: 4px; }
+.timeline h3 { padding: 0.9rem 0.9rem 0.2rem; font-size: 0.95rem; text-transform: none; }
+.timeline p { padding: 0 0.9rem 1.1rem; font-size: 0.82rem; }
+
+/* ============ DETETIVES (hotspots) ============ */
+.hotspot-wrap { }
+.hotspot-image { position: relative; border-radius: var(--radius-lg); overflow: hidden; }
+.hotspot-image img { width: 100%; height: auto; }
+.hotspot { position: absolute; transform: translate(-50%, -50%); background: none; border: none; padding: 10px; }
+.hotspot-dot {
+  display: block; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 0 6px rgba(255,196,0,0.28);
+  animation: pulse 2.2s infinite;
+}
+.hotspot[aria-expanded="true"] .hotspot-dot { background: var(--white); box-shadow: 0 0 0 6px rgba(255,255,255,0.3); }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 6px rgba(255,196,0,0.28); } 50% { box-shadow: 0 0 0 10px rgba(255,196,0,0.12); } }
+
+.hotspot-card {
+  position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem;
+  max-width: 420px;
+  background: var(--near-black);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  padding: 1.3rem 1.5rem;
+  box-shadow: var(--shadow-soft);
+  border-left: 4px solid var(--yellow);
+}
+.hotspot-card h4 { color: var(--yellow); font-size: 1rem; margin-bottom: 0.4rem; text-transform: uppercase; }
+.hotspot-card p { color: rgba(255,255,255,0.85); font-size: 0.9rem; }
+.hotspot-close { position: absolute; top: 0.5rem; right: 0.6rem; background: none; border: none; color: rgba(255,255,255,0.6); font-size: 1.3rem; line-height: 1; }
+.hotspot-close:hover { color: var(--white); }
+
+.hotspot-questions { margin-top: 1.8rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+.hotspot-questions p {
+  background: rgba(255,255,255,0.05);
+  border-left: 2px solid var(--yellow);
+  padding: 0.8rem 1rem;
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.85);
+}
+.hotspot-note { margin-top: 1.2rem; font-size: 0.85rem; color: rgba(255,255,255,0.55); }
+
+/* ============ ANTES E DEPOIS ============ */
+.ba-slider { position: relative; border-radius: var(--radius-lg); overflow: hidden; user-select: none; box-shadow: var(--shadow-soft); }
+.ba-slider img { width: 100%; height: 460px; object-fit: cover; display: block; }
+.ba-after-wrap { position: absolute; inset: 0; width: 50%; overflow: hidden; border-right: 2px solid var(--yellow); }
+.ba-after-wrap img { width: 100%; }
+.ba-after { position: absolute; top: 0; left: 0; height: 100%; object-fit: cover; }
+.ba-tag {
+  position: absolute; bottom: 1rem;
+  background: rgba(7,21,33,0.75); color: var(--white);
+  padding: 0.4rem 0.9rem; border-radius: 999px;
+  font-family: var(--font-display); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.04em;
+}
+.ba-tag-before { right: 1rem; }
+.ba-tag-after { left: 1rem; }
+.ba-range {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  margin: 0; opacity: 0; cursor: ew-resize;
+}
+.ba-handle {
+  position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 3px; background: var(--yellow);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.ba-handle::after {
+  content: '↔';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px; height: 38px;
+  background: var(--yellow); color: var(--near-black);
+  border-radius: 50%; display: grid; place-items: center;
+  font-size: 1.1rem;
+}
+
+/* ============ ASFALTO E DESENVOLVIMENTO ============ */
+.city-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.city-media { border-radius: 50%; overflow: hidden; aspect-ratio: 1; border: 6px solid var(--white); box-shadow: var(--shadow-soft); }
+.city-media img { width: 100%; height: 100%; object-fit: cover; }
+.city-points { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.city-point { border-top: 3px solid var(--yellow); padding-top: 0.8rem; }
+.city-point h3 { font-size: 1rem; text-transform: uppercase; margin-bottom: 0.3rem; }
+.city-point p { font-size: 0.88rem; }
+
+/* ============ OFICINA ============ */
+.workshop-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 3rem; }
+.workshop-step { background: var(--concrete); border-radius: var(--radius-md); padding: 1.4rem 1.1rem; text-align: center; }
+.workshop-step .stage-num { color: var(--petrol); }
+.workshop-step p { font-size: 0.9rem; color: var(--near-black); font-weight: 500; }
+
+.checklist h3 { margin-bottom: 1.2rem; text-transform: none; }
+.checklist-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.8rem; }
+.checklist-grid li {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.9rem; color: var(--near-black); font-weight: 500;
+  background: var(--concrete);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+}
+.checklist-grid li::before { content: '✓'; color: var(--petrol); font-weight: 700; }
+
+/* ============ CARDS GERAIS (canais, materiais) ============ */
+.card-grid { display: grid; gap: 1.5rem; }
+.card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--petrol);
+  border-radius: var(--radius-md);
+  padding: 1.8rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+.card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; text-transform: none; }
+.card p { font-size: 0.94rem; }
+.resource-card { display: flex; flex-direction: column; gap: 0.9rem; }
+.resource-btn { align-self: flex-start; margin-top: 0.4rem; }
+
+.note-box { background: var(--white); border-left: 4px solid var(--yellow); border-radius: 8px; padding: 1.2rem 1.5rem; font-size: 0.9rem; margin-top: 2.2rem; }
+
+/* ============ FONTES ============ */
+.sources-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem 2rem; }
+.sources-list li { padding-left: 1.3rem; position: relative; color: var(--near-black); font-weight: 500; }
+.sources-list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 8px; height: 8px; background: var(--yellow); border-radius: 2px; }
+
+/* ============ ENQUETE ============ */
+.poll { background: var(--near-black); color: var(--white); border-radius: var(--radius-lg); padding: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+.poll-copy h2 { color: var(--white); margin-bottom: 0.8rem; }
+.poll-copy p { color: rgba(255,255,255,0.7); }
+.poll-form fieldset { border: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1.4rem; }
+.poll-option {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px; padding: 0.7rem 0.9rem; font-size: 0.92rem; cursor: pointer;
+  transition: border-color 0.18s ease;
+}
+.poll-option:hover { border-color: var(--yellow); }
+.poll-option input { accent-color: var(--yellow); }
+.poll-feedback { margin-top: 1rem; color: var(--yellow); font-weight: 600; min-height: 1.2em; }
+
+/* ============ BANNER FINAL ============ */
+.final-banner { position: relative; overflow: hidden; color: var(--white); }
+.final-banner img { width: 100%; height: 500px; object-fit: cover; }
+.final-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,21,33,0.55), rgba(7,21,33,0.94)); }
+.final-content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 1.2rem; }
+.final-content h2 { color: var(--white); font-size: clamp(2rem, 4vw, 3rem); }
+.final-content p { color: rgba(255,255,255,0.85); max-width: 52ch; }
+.final-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+/* ============ FOOTER ============ */
+.site-footer { background: var(--near-black); color: var(--white); padding-block: 3rem; border-top: 3px solid var(--yellow); }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.footer-brand strong { font-family: var(--font-display); font-size: 1.2rem; }
+.footer-brand p { color: rgba(255,255,255,0.6); font-size: 0.88rem; margin-top: 0.2rem; }
+.footer-nav { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+.footer-nav a { color: rgba(255,255,255,0.78); font-size: 0.9rem; }
+.footer-nav a:hover { color: var(--yellow); }
+.footer-note { color: rgba(255,255,255,0.45); font-size: 0.8rem; }
+
+/* ============ BACK TO TOP / TOAST ============ */
+.back-to-top {
+  position: fixed; right: 1.6rem; bottom: 1.6rem;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--yellow); color: var(--near-black); border: none;
+  display: grid; place-items: center; box-shadow: var(--shadow-soft);
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  z-index: 400;
+}
+.back-to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.toast {
+  position: fixed; left: 50%; bottom: 1.6rem; transform: translate(-50%, 20px);
+  background: var(--near-black); color: var(--white);
+  padding: 0.85rem 1.4rem; border-radius: 999px; font-size: 0.9rem; font-weight: 500;
+  box-shadow: var(--shadow-soft); opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease; z-index: 600;
+}
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+/* ============ REVEAL ============ */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hotspot-dot { animation: none; }
+}
+
+/* =================================================================
+   RESPONSIVO
+================================================================= */
+@media (max-width: 1180px) {
+  .hero-indicators-grid { grid-template-columns: repeat(2, 1fr); gap: 1.8rem 1.4rem; }
+  .signal-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline { grid-template-columns: repeat(3, 1fr); }
+  .workshop-steps { grid-template-columns: repeat(3, 1fr); }
+  .checklist-grid { grid-template-columns: repeat(3, 1fr); }
+  .sources-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 980px) {
+  .flow-layout, .cross-section, .water-split, .city-layout, .poll { grid-template-columns: 1fr; }
+  .cross-detail { order: -1; }
+  .water-media { height: 300px; }
+  .city-media { max-width: 320px; margin-inline: auto; }
+  .vs-grid { grid-template-columns: 1fr; }
+  .vs-divider { justify-self: center; }
+  .hotspot-questions { grid-template-columns: 1fr; }
+  .card-grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .menu-toggle { display: flex; }
+  .main-nav {
+    position: fixed; inset: var(--header-h) 0 0 0;
+    background: var(--near-black);
+    flex-direction: column; align-items: flex-start;
+    padding: 2rem 1.75rem; gap: 2rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+  }
+  .main-nav.is-open { transform: translateX(0); }
+  .main-nav ul { flex-direction: column; gap: 1.3rem; width: 100%; }
+  .main-nav a:not(.btn) { font-size: 1.1rem; }
+  .nav-cta { width: 100%; text-align: center; }
+
+  .signal-grid { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: repeat(2, 1fr); }
+  .workshop-steps { grid-template-columns: repeat(2, 1fr); }
+  .checklist-grid { grid-template-columns: repeat(2, 1fr); }
+  .card-grid-3 { grid-template-columns: 1fr; }
+  .poll-form fieldset { grid-template-columns: 1fr; }
+  .hero-indicators-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .section { padding-block: 3.6rem; }
+  .timeline { grid-template-columns: 1fr; }
+  .workshop-steps { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .poll { padding: 1.8rem; }
+  .stage-card { flex: 0 0 220px; }
+}
+
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#conteudo-principal">Pular para o conteúdo</a>
+
+<!-- ============================================= -->
+<!-- HEADER -->
+<!-- ============================================= -->
+<header class="site-header" id="topo">
+  <div class="container header-inner">
+    <a href="#inicio" class="brand" aria-label="Asfalto Certo, página inicial">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="38" height="38">
+          <rect x="1" y="1" width="46" height="46" rx="8" fill="#10283D"/>
+          <path d="M8 34 L18 14 L30 14 L40 34" stroke="#FFC400" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="12" y1="34" x2="36" y2="34" stroke="#F4F5F6" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 5"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>ASFALTO CERTO</strong>
+        <small>Entender a rua para construir cidades melhores</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Abrir menu de navegação">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#da-rua-a-cidade">A rua</a></li>
+        <li><a href="#problemas">Problemas</a></li>
+        <li><a href="#oficina">Oficina</a></li>
+        <li><a href="#materiais">Materiais</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+      <a href="#problemas" class="btn btn-primary nav-cta">Conheça os problemas</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo-principal">
+
+  <!-- ============================================= -->
+  <!-- HERO -->
+  <!-- ============================================= -->
+  <section class="hero" id="inicio" aria-label="Abertura">
+    <div class="hero-media">
+      <img src="https://images.unsplash.com/photo-1506022332231-3647d37c1968?auto=format&fit=crop&w=2000&q=80" alt="Vista aérea de avenidas e vias asfaltadas cruzando uma cidade" loading="eager">
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="lane-line lane-line-hero" aria-hidden="true"></div>
+    </div>
+
+    <div class="container hero-content">
+      <h1>
+        A QUALIDADE DE UMA CIDADE<br>
+        TAMBÉM PASSA PELAS <span class="accent">SUAS RUAS</span>.
+      </h1>
+      <p class="hero-lead">Buracos, rachaduras e alagamentos não aparecem por acaso. Entenda como uma via é construída, por que ela se deteriora e como uma pavimentação adequada contribui para cidades melhores.</p>
+      <div class="hero-actions">
+        <a href="#da-rua-a-cidade" class="btn btn-primary">Entenda sua rua</a>
+        <a href="#problemas" class="btn btn-outline">Conheça os problemas</a>
+      </div>
+    </div>
+
+    <div class="hero-indicators">
+      <div class="container hero-indicators-grid">
+        <div class="indicator reveal">
+          <span class="indicator-num">01</span>
+          <h3>Pavimentação</h3>
+          <p>Como uma rua é construída.</p>
+        </div>
+        <div class="indicator reveal">
+          <span class="indicator-num">02</span>
+          <h3>Drenagem</h3>
+          <p>Por que a água importa.</p>
+        </div>
+        <div class="indicator reveal">
+          <span class="indicator-num">03</span>
+          <h3>Manutenção</h3>
+          <p>Como preservar as vias.</p>
+        </div>
+        <div class="indicator reveal">
+          <span class="indicator-num">04</span>
+          <h3>Cidade</h3>
+          <p>Como a infraestrutura influencia a mobilidade e o desenvolvimento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- DA RUA À CIDADE -->
+  <!-- ============================================= -->
+  <section class="section" id="da-rua-a-cidade" aria-labelledby="rua-cidade-title">
+    <div class="container flow-layout">
+      <div class="section-head reveal">
+        <h2 id="rua-cidade-title">Uma rua não é apenas asfalto.</h2>
+        <p class="section-lead">A qualidade das vias influencia deslocamentos, acesso aos bairros, transporte, serviços públicos e o funcionamento da cidade.</p>
+      </div>
+
+      <ol class="flow-chain reveal">
+        <li><span class="flow-dot" aria-hidden="true"></span><span class="flow-label">Pavimentação</span></li>
+        <li><span class="flow-dot" aria-hidden="true"></span><span class="flow-label">Vias em boas condições</span></li>
+        <li><span class="flow-dot" aria-hidden="true"></span><span class="flow-label">Melhor mobilidade</span></li>
+        <li><span class="flow-dot" aria-hidden="true"></span><span class="flow-label">Mais segurança</span></li>
+        <li><span class="flow-dot" aria-hidden="true"></span><span class="flow-label">Infraestrutura urbana</span></li>
+        <li><span class="flow-dot flow-dot-end" aria-hidden="true"></span><span class="flow-label flow-label-end">Desenvolvimento da cidade</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- O QUE EXISTE EMBAIXO DO ASFALTO -->
+  <!-- ============================================= -->
+  <section class="section section-dark" id="camadas" aria-labelledby="camadas-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">RF01 · RF02</p>
+        <h2 id="camadas-title">O que existe embaixo do asfalto?</h2>
+        <p class="section-lead">O asfalto que enxergamos é apenas a parte superior de um sistema formado por diferentes camadas.</p>
+      </div>
+
+      <div class="cross-section reveal">
+        <div class="cross-illustration" role="group" aria-label="Camadas da via, passe o mouse para destacar">
+          <div class="cross-vehicle" aria-hidden="true">
+            <svg viewBox="0 0 64 28" width="64" height="28"><rect x="4" y="8" width="44" height="12" rx="3" fill="#F4F5F6"/><rect x="14" y="2" width="24" height="10" rx="3" fill="#F4F5F6"/><circle cx="16" cy="22" r="5" fill="#10283D"/><circle cx="42" cy="22" r="5" fill="#10283D"/></svg>
+          </div>
+          <button type="button" class="cross-layer" data-layer="revestimento" style="--layer-color:#FFC400;">
+            <span>Revestimento asfáltico</span>
+          </button>
+          <button type="button" class="cross-layer" data-layer="base" style="--layer-color:#3C6E91;">
+            <span>Base</span>
+          </button>
+          <button type="button" class="cross-layer" data-layer="subbase" style="--layer-color:#274A63;">
+            <span>Sub-base</span>
+          </button>
+          <button type="button" class="cross-layer" data-layer="subleito" style="--layer-color:#5A4732;">
+            <span>Subleito / solo</span>
+          </button>
+        </div>
+
+        <div class="cross-detail" id="crossDetail" aria-live="polite">
+          <h3 id="crossDetailTitle">Revestimento asfáltico</h3>
+          <p id="crossDetailText">Camada de rolamento em contato direto com os veículos, responsável pela aderência e pela proteção das camadas inferiores.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- QUANDO A RUA COMEÇA A DAR SINAIS -->
+  <!-- ============================================= -->
+  <section class="section" id="problemas" aria-labelledby="problemas-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">RF05</p>
+        <h2 id="problemas-title">Quando a rua começa a dar sinais</h2>
+        <p class="section-lead">Alguns sinais indicam que o pavimento está perdendo desempenho. Conhecer cada um ajuda a entender melhor o que está acontecendo.</p>
+      </div>
+
+      <div class="signal-grid">
+        <article class="signal-card reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pothole_in_Villeray,_Montr%C3%A9al.jpg?width=760" alt="Buraco em via asfaltada, em Montreal" loading="lazy">
+          <div class="signal-body">
+            <h3>Buraco</h3>
+            <p>Depressão que rompe o revestimento, expondo camadas inferiores.</p>
+            <button type="button" class="btn btn-text signal-toggle" aria-expanded="false">Entender possível causa</button>
+            <p class="signal-cause" hidden>Costuma surgir da combinação entre infiltração de água, tráfego intenso e fadiga do material ao longo do tempo.</p>
+          </div>
+        </article>
+        <article class="signal-card reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Asphalt_deterioration.jpg?width=760" alt="Superfície de asfalto com sinais de deterioração e rachaduras" loading="lazy">
+          <div class="signal-body">
+            <h3>Rachaduras</h3>
+            <p>Fissuras que se formam na superfície e podem se aprofundar com o tempo.</p>
+            <button type="button" class="btn btn-text signal-toggle" aria-expanded="false">Entender possível causa</button>
+            <p class="signal-cause" hidden>Variação de temperatura, fadiga do material e movimentação das camadas abaixo podem estar envolvidas.</p>
+          </div>
+        </article>
+        <article class="signal-card reveal">
+          <img src="https://images.pexels.com/photos/19550925/pexels-photo-19550925/free-photo-of-road-roller-on-asphalt-road.jpeg?auto=compress&cs=tinysrgb&w=760" alt="Rolo compactador atuando sobre via em reparo, relacionado a deformações no pavimento" loading="lazy">
+          <div class="signal-body">
+            <h3>Deformação</h3>
+            <p>Ondulações ou afundamentos que alteram a superfície regular da via.</p>
+            <button type="button" class="btn btn-text signal-toggle" aria-expanded="false">Entender possível causa</button>
+            <p class="signal-cause" hidden>Pode estar relacionada a compactação inadequada, sobrecarga de tráfego ou deficiência nas camadas de base.</p>
+          </div>
+        </article>
+        <article class="signal-card reveal">
+          <img src="https://images.unsplash.com/photo-1490410695069-4affdee840f2?auto=format&fit=crop&w=760&q=80" alt="Via asfaltada molhada após chuva" loading="lazy">
+          <div class="signal-body">
+            <h3>Poças</h3>
+            <p>Água parada sobre a via, geralmente em pontos baixos ou mal drenados.</p>
+            <button type="button" class="btn btn-text signal-toggle" aria-expanded="false">Entender possível causa</button>
+            <p class="signal-cause" hidden>Drenagem insuficiente, deformações que retêm água ou obstrução de bueiros são causas frequentes.</p>
+          </div>
+        </article>
+        <article class="signal-card reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pothole_patching.jpg?width=760" alt="Reparo (remendo) sendo aplicado em buraco no asfalto" loading="lazy">
+          <div class="signal-body">
+            <h3>Remendos</h3>
+            <p>Áreas reparadas pontualmente, visíveis pela diferença de textura.</p>
+            <button type="button" class="btn btn-text signal-toggle" aria-expanded="false">Entender possível causa</button>
+            <p class="signal-cause" hidden>Geralmente resultam de reparo localizado após um buraco ou de intervenção em rede subterrânea.</p>
+          </div>
+        </article>
+        <article class="signal-card reveal">
+          <img src="https://images.unsplash.com/photo-1490410695069-4affdee840f2?auto=format&fit=crop&w=760&q=80" alt="Via molhada, ilustrando dificuldade de escoamento de água" loading="lazy">
+          <div class="signal-body">
+            <h3>Drenagem</h3>
+            <p>Falhas no direcionamento da água comprometem a durabilidade da via.</p>
+            <button type="button" class="btn btn-text signal-toggle" aria-expanded="false">Entender possível causa</button>
+            <p class="signal-cause" hidden>Bueiros entupidos, projeto de drenagem insuficiente ou ausência de manutenção podem causar o problema.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- COMO NASCE UM BURACO -->
+  <!-- ============================================= -->
+  <section class="section section-tinted" id="como-nasce-um-buraco" aria-labelledby="buraco-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="buraco-title">Como nasce um buraco?</h2>
+        <p class="section-lead">Uma sequência educativa e simplificada. Existem diferentes causas e uma avaliação técnica pode ser necessária para cada caso real.</p>
+      </div>
+
+      <div class="stage-wrap reveal">
+        <button type="button" class="stage-nav stage-prev" aria-label="Etapa anterior">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="stage-track" id="stageTrack">
+          <article class="stage-card">
+            <span class="stage-num">1</span>
+            <h3>Pavimento em condições adequadas</h3>
+            <p>A via cumpre sua função com segurança e conforto.</p>
+          </article>
+          <article class="stage-card">
+            <span class="stage-num">2</span>
+            <h3>Surgimento de pequenas fissuras ou desgaste</h3>
+            <p>Sinais iniciais, muitas vezes pouco perceptíveis no dia a dia.</p>
+          </article>
+          <article class="stage-card">
+            <span class="stage-num">3</span>
+            <h3>Entrada de água ou agravamento das condições</h3>
+            <p>As fissuras podem permitir a entrada de água nas camadas internas.</p>
+          </article>
+          <article class="stage-card">
+            <span class="stage-num">4</span>
+            <h3>Perda de desempenho do pavimento</h3>
+            <p>A estrutura passa a responder pior às cargas do tráfego.</p>
+          </article>
+          <article class="stage-card">
+            <span class="stage-num">5</span>
+            <h3>Surgimento de danos maiores</h3>
+            <p>O defeito se torna visível e mais evidente na superfície.</p>
+          </article>
+          <article class="stage-card">
+            <span class="stage-num">6</span>
+            <h3>Necessidade de avaliação e manutenção</h3>
+            <p>Uma intervenção técnica passa a ser recomendada.</p>
+          </article>
+        </div>
+
+        <button type="button" class="stage-nav stage-next" aria-label="Próxima etapa">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <p class="stage-disclaimer reveal">Nem todo buraco surge exatamente dessa maneira. Existem diferentes causas possíveis, e uma avaliação técnica em campo pode ser necessária para identificar a origem real do problema.</p>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- ÁGUA + ASFALTO -->
+  <!-- ============================================= -->
+  <section class="section section-dark" id="agua" aria-labelledby="agua-title">
+    <div class="container water-split">
+      <div class="water-media reveal">
+        <img src="https://images.unsplash.com/photo-1490410695069-4affdee840f2?auto=format&fit=crop&w=1000&q=80" alt="Via asfaltada molhada, com água sobre o pavimento" loading="lazy">
+      </div>
+      <div class="water-content reveal">
+        <p class="eyebrow">RF03</p>
+        <h2 id="agua-title">Água + asfalto</h2>
+
+        <div class="water-diagram">
+          <span>Chuva</span>
+          <span class="water-arrow" aria-hidden="true">↓</span>
+          <span>Escoamento</span>
+          <span class="water-arrow" aria-hidden="true">↓</span>
+          <span>Drenagem</span>
+        </div>
+
+        <p class="water-note">Quando existem condições inadequadas, podem ocorrer:</p>
+        <ul class="water-tags">
+          <li>Infiltração</li>
+          <li>Acúmulo de água</li>
+          <li>Deterioração</li>
+        </ul>
+
+        <p class="water-quote">“A água é um dos elementos que precisam ser considerados para a durabilidade de uma via.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- TAPA-BURACO X RECUPERAÇÃO -->
+  <!-- ============================================= -->
+  <section class="section" id="tapa-buraco" aria-labelledby="tapa-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">RF06</p>
+        <h2 id="tapa-title">Tapa-buraco x Recuperação</h2>
+      </div>
+
+      <div class="vs-grid reveal">
+        <div class="vs-card">
+          <img src="https://images.pexels.com/photos/19550925/pexels-photo-19550925/free-photo-of-road-roller-on-asphalt-road.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Máquina realizando reparo localizado sobre o asfalto" loading="lazy">
+          <h3>Tapa-buraco</h3>
+          <p>Intervenção realizada em uma área específica do pavimento.</p>
+        </div>
+
+        <div class="vs-divider" aria-hidden="true">≠</div>
+
+        <div class="vs-card">
+          <img src="https://images.pexels.com/photos/17540913/pexels-photo-17540913/free-photo-of-workers-paving-a-forest-road.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Equipe e máquinas realizando pavimentação de um trecho de via" loading="lazy">
+          <h3>Recuperação do pavimento</h3>
+          <p>Pode envolver uma intervenção mais ampla, dependendo das condições da estrutura.</p>
+        </div>
+      </div>
+
+      <div class="vs-question reveal">
+        <p>Corrigir o que aparece na superfície significa sempre resolver a origem do problema?</p>
+        <button type="button" class="btn btn-outline" id="revealAnswerBtn" aria-expanded="false" aria-controls="revealAnswerText">Entenda a diferença</button>
+        <p class="vs-answer" id="revealAnswerText" hidden>Nem sempre. Um reparo localizado pode devolver a superfície transitável rapidamente, mas se a causa (como um problema de drenagem ou de base) não for identificada e tratada, o defeito tende a voltar a aparecer no mesmo ponto ou nas proximidades.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- DO MATERIAL À RUA -->
+  <!-- ============================================= -->
+  <section class="section section-tinted" id="processo" aria-labelledby="processo-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">RF04</p>
+        <h2 id="processo-title">Do material à rua</h2>
+      </div>
+
+      <ol class="timeline reveal">
+        <li>
+          <div class="timeline-media"><img src="https://images.pexels.com/photos/35890914/pexels-photo-35890914/free-photo-of-road-paving-in-rural-oregon-landscape.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Trecho de via recebendo aplicação de material asfáltico" loading="lazy"></div>
+          <span class="timeline-num">01</span>
+          <h3>Agregados e materiais</h3>
+          <p>Seleção e dosagem dos insumos que compõem a mistura asfáltica.</p>
+        </li>
+        <li>
+          <div class="timeline-media"><img src="https://images.pexels.com/photos/17540913/pexels-photo-17540913/free-photo-of-workers-paving-a-forest-road.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Equipe de pavimentação trabalhando com a massa asfáltica" loading="lazy"></div>
+          <span class="timeline-num">02</span>
+          <h3>Produção da mistura</h3>
+          <p>Os materiais são aquecidos e misturados até formar a massa asfáltica.</p>
+        </li>
+        <li>
+          <div class="timeline-media"><img src="https://images.pexels.com/photos/17540913/pexels-photo-17540913/free-photo-of-workers-paving-a-forest-road.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Via de acesso utilizada para o transporte até a obra" loading="lazy"></div>
+          <span class="timeline-num">03</span>
+          <h3>Transporte</h3>
+          <p>A massa quente segue em caminhões até o local da obra.</p>
+        </li>
+        <li>
+          <div class="timeline-media"><img src="https://images.pexels.com/photos/35890914/pexels-photo-35890914/free-photo-of-road-paving-in-rural-oregon-landscape.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Aplicação de asfalto sobre trecho de via" loading="lazy"></div>
+          <span class="timeline-num">04</span>
+          <h3>Aplicação</h3>
+          <p>Uma vibroacabadora distribui a massa de forma uniforme sobre a via.</p>
+        </li>
+        <li>
+          <div class="timeline-media"><img src="https://images.pexels.com/photos/19550925/pexels-photo-19550925/free-photo-of-road-roller-on-asphalt-road.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Rolo compactador atuando sobre a via recém-asfaltada" loading="lazy"></div>
+          <span class="timeline-num">05</span>
+          <h3>Compactação</h3>
+          <p>Rolos compactadores garantem densidade e resistência à camada.</p>
+        </li>
+        <li>
+          <div class="timeline-media"><img src="https://images.pexels.com/photos/27410934/pexels-photo-27410934/free-photo-of-road-maintenance.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Via finalizada, com pavimento liso e uniforme" loading="lazy"></div>
+          <span class="timeline-num">06</span>
+          <h3>Via finalizada</h3>
+          <p>A via fica pronta para liberação segura do tráfego.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- DETETIVES DO ASFALTO -->
+  <!-- ============================================= -->
+  <section class="section section-dark" id="detetives" aria-labelledby="detetives-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">RF07</p>
+        <h2 id="detetives-title">Você consegue observar os sinais de uma via?</h2>
+        <p class="section-lead">Clique nos pontos da fotografia para conhecer cada sinal identificado.</p>
+      </div>
+
+      <div class="hotspot-wrap reveal">
+        <div class="hotspot-image">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Asphalt_deterioration.jpg?width=1400" alt="Fotografia de via para observação dos sinais de deterioração">
+
+          <button type="button" class="hotspot" style="top:38%; left:22%;" data-point="buraco" aria-expanded="false">
+            <span class="hotspot-dot"></span><span class="sr-only">Buraco</span>
+          </button>
+          <button type="button" class="hotspot" style="top:60%; left:44%;" data-point="rachadura" aria-expanded="false">
+            <span class="hotspot-dot"></span><span class="sr-only">Rachadura</span>
+          </button>
+          <button type="button" class="hotspot" style="top:25%; left:66%;" data-point="agua" aria-expanded="false">
+            <span class="hotspot-dot"></span><span class="sr-only">Água</span>
+          </button>
+          <button type="button" class="hotspot" style="top:72%; left:75%;" data-point="remendo" aria-expanded="false">
+            <span class="hotspot-dot"></span><span class="sr-only">Remendo</span>
+          </button>
+          <button type="button" class="hotspot" style="top:15%; left:40%;" data-point="drenagem" aria-expanded="false">
+            <span class="hotspot-dot"></span><span class="sr-only">Drenagem</span>
+          </button>
+
+          <div class="hotspot-card" id="hotspotCard" role="status" aria-live="polite" hidden>
+            <button type="button" class="hotspot-close" id="hotspotClose" aria-label="Fechar explicação">×</button>
+            <h4 id="hotspotCardTitle"></h4>
+            <p id="hotspotCardText"></p>
+          </div>
+        </div>
+
+        <div class="hotspot-questions">
+          <p>O que você observou?</p>
+          <p>Pode existir relação com água?</p>
+          <p>O problema parece estar apenas na superfície?</p>
+          <p>Que informações seriam necessárias para avaliar melhor essa situação?</p>
+        </div>
+        <p class="hotspot-note">Fotografias ajudam na observação, mas não substituem uma avaliação técnica em campo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- ANTES E DEPOIS -->
+  <!-- ============================================= -->
+  <section class="section" id="antes-depois" aria-labelledby="antes-depois-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="antes-depois-title">Quando infraestrutura transforma o espaço urbano.</h2>
+        <p class="section-lead">Arraste o controle para comparar. As imagens são ilustrativas e não representam uma obra real específica.</p>
+      </div>
+
+      <div class="ba-slider reveal" id="baSlider">
+        <img class="ba-before" src="https://commons.wikimedia.org/wiki/Special:FilePath/Pothole_in_Villeray,_Montr%C3%A9al.jpg?width=1400" alt="Rua deteriorada, com buraco visível no pavimento">
+        <div class="ba-after-wrap" id="baAfterWrap">
+          <img class="ba-after" src="https://images.pexels.com/photos/27410934/pexels-photo-27410934/free-photo-of-road-maintenance.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Via recuperada, com pavimento liso">
+        </div>
+        <div class="ba-tag ba-tag-before">Antes</div>
+        <div class="ba-tag ba-tag-after">Depois</div>
+        <input type="range" min="0" max="100" value="50" class="ba-range" id="baRange" aria-label="Controle de comparação antes e depois">
+        <div class="ba-handle" id="baHandle" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- ASFALTO E DESENVOLVIMENTO DA CIDADE -->
+  <!-- ============================================= -->
+  <section class="section section-tinted" id="desenvolvimento" aria-labelledby="desenvolvimento-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">RF10</p>
+        <h2 id="desenvolvimento-title">Asfalto e desenvolvimento da cidade</h2>
+      </div>
+
+      <div class="city-layout reveal">
+        <div class="city-media">
+          <img src="https://images.unsplash.com/photo-1506022332231-3647d37c1968?auto=format&fit=crop&w=1000&q=80" alt="Fotografia aérea de vias e avenidas de uma cidade" loading="lazy">
+        </div>
+        <div class="city-points">
+          <div class="city-point"><h3>Mobilidade</h3><p>Facilita os deslocamentos.</p></div>
+          <div class="city-point"><h3>Acessibilidade</h3><p>Ajuda na conexão entre diferentes áreas.</p></div>
+          <div class="city-point"><h3>Segurança viária</h3><p>Uma infraestrutura adequada contribui para deslocamentos mais seguros.</p></div>
+          <div class="city-point"><h3>Serviços</h3><p>As vias fazem parte da infraestrutura necessária para o funcionamento urbano.</p></div>
+          <div class="city-point"><h3>Desenvolvimento</h3><p>Infraestrutura e mobilidade fazem parte do desenvolvimento das cidades.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- OFICINA -->
+  <!-- ============================================= -->
+  <section class="section" id="oficina" aria-labelledby="oficina-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="oficina-title">Oficina Asfalto Certo</h2>
+        <p class="section-lead">Uma dinâmica simples para grupos, escolas e associações discutirem os problemas das vias com um olhar mais atento.</p>
+      </div>
+
+      <div class="workshop-steps reveal">
+        <div class="workshop-step"><span class="stage-num">01</span><p>Dividir os participantes em grupos.</p></div>
+        <div class="workshop-step"><span class="stage-num">02</span><p>Apresentar fotografias de diferentes vias.</p></div>
+        <div class="workshop-step"><span class="stage-num">03</span><p>Observar os problemas.</p></div>
+        <div class="workshop-step"><span class="stage-num">04</span><p>Discutir possíveis causas.</p></div>
+        <div class="workshop-step"><span class="stage-num">05</span><p>Compartilhar as conclusões.</p></div>
+      </div>
+
+      <div class="checklist reveal">
+        <h3>O que você vai precisar</h3>
+        <ul class="checklist-grid">
+          <li>Projetor ou televisão</li>
+          <li>Computador</li>
+          <li>Slides</li>
+          <li>Fotografias de pavimentos</li>
+          <li>Esquema das camadas da pavimentação</li>
+          <li>Vídeos curtos</li>
+          <li>Cartazes</li>
+          <li>Quadro ou papel</li>
+          <li>Fichas para participantes</li>
+          <li>Formulário de avaliação</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- CANAIS OFICIAIS (RF08) -->
+  <!-- ============================================= -->
+  <section class="section section-tinted" id="contato" aria-labelledby="canais-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">RF08</p>
+        <h2 id="canais-title">Como comunicar problemas nas vias</h2>
+        <p class="section-lead">Problemas identificados nas vias podem e devem ser comunicados pelos canais oficiais responsáveis pela via em questão.</p>
+      </div>
+
+      <div class="card-grid card-grid-3">
+        <article class="card reveal"><h3>Prefeitura</h3><p>Responsável por grande parte das vias municipais e seus canais de atendimento ao cidadão.</p></article>
+        <article class="card reveal"><h3>Secretaria de Infraestrutura</h3><p>Órgão técnico responsável pelo planejamento e manutenção das vias na sua região.</p></article>
+        <article class="card reveal"><h3>Órgão responsável pela via</h3><p>Vias estaduais e federais costumam ter órgãos próprios de gestão e conservação.</p></article>
+        <article class="card reveal"><h3>Ouvidorias</h3><p>Canal formal para registrar solicitações, reclamações e acompanhar respostas.</p></article>
+        <article class="card reveal"><h3>Canais de fiscalização</h3><p>Estruturas responsáveis por verificar o cumprimento de normas técnicas e contratuais.</p></article>
+      </div>
+
+      <p class="note-box reveal">Os nomes e endereços específicos de cada canal variam conforme o município e a via envolvida. Consulte diretamente o site oficial da sua prefeitura ou do órgão responsável para obter os contatos corretos.</p>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- MATERIAIS E RECURSOS (RF11) -->
+  <!-- ============================================= -->
+  <section class="section" id="materiais" aria-labelledby="materiais-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="materiais-title">Materiais e recursos</h2>
+        <p class="section-lead">Conteúdos de apoio para levar o Asfalto Certo para escolas, associações e grupos comunitários.</p>
+      </div>
+
+      <div class="card-grid card-grid-3">
+        <article class="card resource-card reveal">
+          <h3>Guia sobre pavimentação</h3>
+          <p>Introdução visual aos conceitos básicos da pavimentação.</p>
+          <button type="button" class="btn btn-outline resource-btn">Visualizar</button>
+        </article>
+        <article class="card resource-card reveal">
+          <h3>Infográfico das camadas da via</h3>
+          <p>Resumo ilustrado das camadas apresentadas na seção "O que existe embaixo do asfalto".</p>
+          <button type="button" class="btn btn-outline resource-btn">Visualizar</button>
+        </article>
+        <article class="card resource-card reveal">
+          <h3>Guia sobre drenagem</h3>
+          <p>Como a água interage com a estrutura da via e por que a drenagem importa.</p>
+          <button type="button" class="btn btn-outline resource-btn">Visualizar</button>
+        </article>
+        <article class="card resource-card reveal">
+          <h3>Ficha "Detetives do Asfalto"</h3>
+          <p>Material de apoio impresso para conduzir a atividade em grupo.</p>
+          <button type="button" class="btn btn-outline resource-btn">Visualizar</button>
+        </article>
+        <article class="card resource-card reveal">
+          <h3>Material da oficina</h3>
+          <p>Roteiro completo para facilitadores conduzirem a oficina Asfalto Certo.</p>
+          <button type="button" class="btn btn-outline resource-btn">Visualizar</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- ENQUETE (RF12) -->
+  <!-- ============================================= -->
+  <section class="section section-tinted" id="participe" aria-labelledby="participe-title">
+    <div class="container">
+      <div class="poll reveal">
+        <div class="poll-copy">
+          <h2 id="participe-title">Qual problema você mais observa nas ruas da sua região?</h2>
+          <p>Sua resposta ajuda a ilustrar, de forma simples, quais problemas são mais percebidos pela comunidade.</p>
+        </div>
+
+        <form class="poll-form" id="pollForm">
+          <fieldset>
+            <legend class="sr-only">Selecione uma opção</legend>
+            <label class="poll-option"><input type="radio" name="poll" value="buracos"> Buracos</label>
+            <label class="poll-option"><input type="radio" name="poll" value="rachaduras"> Rachaduras</label>
+            <label class="poll-option"><input type="radio" name="poll" value="pocas"> Poças</label>
+            <label class="poll-option"><input type="radio" name="poll" value="drenagem"> Problemas de drenagem</label>
+            <label class="poll-option"><input type="radio" name="poll" value="desgaste"> Desgaste do pavimento</label>
+            <label class="poll-option"><input type="radio" name="poll" value="outro"> Outro</label>
+          </fieldset>
+          <button type="submit" class="btn btn-primary">Enviar resposta</button>
+          <p class="poll-feedback" id="pollFeedback" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- FONTES -->
+  <!-- ============================================= -->
+  <section class="section" id="fontes" aria-labelledby="fontes-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 id="fontes-title">Fontes para aprofundar</h2>
+      </div>
+      <ul class="sources-list reveal">
+        <li>DNIT — Departamento Nacional de Infraestrutura de Transportes</li>
+        <li>ABNT — Associação Brasileira de Normas Técnicas</li>
+        <li>TCU — Tribunal de Contas da União</li>
+        <li>Órgãos estaduais de infraestrutura</li>
+        <li>Prefeituras e secretarias municipais responsáveis</li>
+        <li>Universidades e centros de pesquisa em engenharia</li>
+        <li>Publicações acadêmicas sobre pavimentação</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- SEÇÃO FINAL -->
+  <!-- ============================================= -->
+  <section class="final-banner reveal" aria-labelledby="final-title">
+    <img src="https://images.unsplash.com/photo-1506022332231-3647d37c1968?auto=format&fit=crop&w=2000&q=80" alt="Vista aérea de avenidas entrando em uma cidade">
+    <div class="final-scrim" aria-hidden="true"></div>
+    <div class="container final-content">
+      <h2 id="final-title">RUAS MELHORES.<br>CIDADES MELHORES.</h2>
+      <p>Conhecer como nossas vias funcionam é o primeiro passo para observar, compreender e participar do desenvolvimento da cidade.</p>
+      <div class="final-actions">
+        <a href="#inicio" class="btn btn-primary">Explore o Asfalto Certo</a>
+        <a href="#oficina" class="btn btn-outline">Conheça a oficina</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================= -->
+<!-- RODAPÉ -->
+<!-- ============================================= -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <strong>ASFALTO CERTO</strong>
+      <p>Entender a rua para construir cidades melhores.</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Links do rodapé">
+      <a href="#inicio">Início</a>
+      <a href="#da-rua-a-cidade">A rua</a>
+      <a href="#problemas">Problemas</a>
+      <a href="#oficina">Oficina</a>
+      <a href="#materiais">Materiais</a>
+      <a href="#contato">Contato</a>
+    </nav>
+
+    <p class="footer-note">Projeto educativo sobre pavimentação e infraestrutura urbana.</p>
+  </div>
+</footer>
+
+<button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =================================================================
+   ASFALTO CERTO — script.js (v2)
+   JavaScript puro, sem dependências externas.
+================================================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------------------------------------------------------
+     1. HEADER: sombra ao rolar + menu mobile
+  --------------------------------------------------------- */
+  const header = document.querySelector('.site-header');
+  const menuToggle = document.getElementById('menuToggle');
+  const mainNav = document.getElementById('mainNav');
+
+  const onScroll = () => {
+    header.classList.toggle('is-scrolled', window.scrollY > 12);
+    toggleBackToTop();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  if (menuToggle && mainNav) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mainNav.classList.toggle('is-open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    mainNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (mainNav.classList.contains('is-open')) {
+          mainNav.classList.remove('is-open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.setAttribute('aria-label', 'Abrir menu de navegação');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------
+     2. VOLTAR AO TOPO
+  --------------------------------------------------------- */
+  const backToTop = document.getElementById('backToTop');
+
+  function toggleBackToTop() {
+    if (!backToTop) return;
+    backToTop.classList.toggle('is-visible', window.scrollY > 480);
+  }
+
+  if (backToTop) {
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  /* ---------------------------------------------------------
+     3. ANIMAÇÃO AO APARECER NA TELA
+  --------------------------------------------------------- */
+  const revealItems = document.querySelectorAll('.reveal');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if ('IntersectionObserver' in window && !prefersReducedMotion) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealItems.forEach(item => revealObserver.observe(item));
+  } else {
+    revealItems.forEach(item => item.classList.add('is-visible'));
+  }
+
+  /* ---------------------------------------------------------
+     4. O QUE EXISTE EMBAIXO DO ASFALTO — camadas
+  --------------------------------------------------------- */
+  const crossLayerData = {
+    revestimento: {
+      title: 'Revestimento asfáltico',
+      text: 'Camada de rolamento em contato direto com os veículos, responsável pela aderência e pela proteção das camadas inferiores.'
+    },
+    base: {
+      title: 'Base',
+      text: 'Distribui as cargas recebidas do revestimento, reduzindo a pressão que chega às camadas inferiores.'
+    },
+    subbase: {
+      title: 'Sub-base',
+      text: 'Camada de reforço que complementa a base, ajudando a espalhar ainda mais o esforço antes de chegar ao solo.'
+    },
+    subleito: {
+      title: 'Subleito / solo',
+      text: 'É o solo preparado que funciona como fundação para as demais camadas da via.'
+    }
+  };
+
+  const crossLayers = document.querySelectorAll('.cross-layer');
+  const crossTitle = document.getElementById('crossDetailTitle');
+  const crossText = document.getElementById('crossDetailText');
+
+  crossLayers.forEach(btn => {
+    const activate = () => {
+      crossLayers.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const data = crossLayerData[btn.getAttribute('data-layer')];
+      if (data && crossTitle && crossText) {
+        crossTitle.textContent = data.title;
+        crossText.textContent = data.text;
+      }
+    };
+    btn.addEventListener('click', activate);
+    btn.addEventListener('mouseenter', activate);
+  });
+
+  /* ---------------------------------------------------------
+     5. QUANDO A RUA COMEÇA A DAR SINAIS — causas expansíveis
+  --------------------------------------------------------- */
+  document.querySelectorAll('.signal-toggle').forEach(btn => {
+    const cause = btn.nextElementSibling;
+    btn.addEventListener('click', () => {
+      const isHidden = cause.hasAttribute('hidden');
+      if (isHidden) {
+        cause.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.textContent = 'Ocultar causa';
+      } else {
+        cause.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.textContent = 'Entender possível causa';
+      }
+    });
+  });
+
+  /* ---------------------------------------------------------
+     6. COMO NASCE UM BURACO — stepper horizontal
+  --------------------------------------------------------- */
+  const stageTrack = document.getElementById('stageTrack');
+  const stagePrev = document.querySelector('.stage-prev');
+  const stageNext = document.querySelector('.stage-next');
+
+  if (stageTrack && stagePrev && stageNext) {
+    const scrollAmount = () => (stageTrack.querySelector('.stage-card')?.offsetWidth || 260) + 19;
+    stagePrev.addEventListener('click', () => stageTrack.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+    stageNext.addEventListener('click', () => stageTrack.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+  }
+
+  /* ---------------------------------------------------------
+     7. TAPA-BURACO X RECUPERAÇÃO — revelar resposta
+  --------------------------------------------------------- */
+  const revealBtn = document.getElementById('revealAnswerBtn');
+  const revealText = document.getElementById('revealAnswerText');
+
+  if (revealBtn && revealText) {
+    revealBtn.addEventListener('click', () => {
+      const isHidden = revealText.hasAttribute('hidden');
+      if (isHidden) {
+        revealText.removeAttribute('hidden');
+        revealBtn.setAttribute('aria-expanded', 'true');
+        revealBtn.textContent = 'Ocultar resposta';
+      } else {
+        revealText.setAttribute('hidden', '');
+        revealBtn.setAttribute('aria-expanded', 'false');
+        revealBtn.textContent = 'Entenda a diferença';
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------
+     8. DETETIVES DO ASFALTO — pontos clicáveis (hotspots)
+  --------------------------------------------------------- */
+  const hotspotData = {
+    buraco: {
+      title: 'Buraco',
+      text: 'Depressão que rompe o revestimento e expõe camadas inferiores da via.'
+    },
+    rachadura: {
+      title: 'Rachadura',
+      text: 'Fissura na superfície que pode se aprofundar e facilitar a entrada de água.'
+    },
+    agua: {
+      title: 'Água',
+      text: 'Acúmulo que pode indicar problema de drenagem ou deformação no pavimento.'
+    },
+    remendo: {
+      title: 'Remendo',
+      text: 'Reparo localizado, muitas vezes visível pela diferença de textura ou cor.'
+    },
+    drenagem: {
+      title: 'Drenagem',
+      text: 'Ponto onde a água deveria ser corretamente escoada para fora da via.'
+    }
+  };
+
+  const hotspots = document.querySelectorAll('.hotspot');
+  const hotspotCard = document.getElementById('hotspotCard');
+  const hotspotCardTitle = document.getElementById('hotspotCardTitle');
+  const hotspotCardText = document.getElementById('hotspotCardText');
+  const hotspotClose = document.getElementById('hotspotClose');
+
+  hotspots.forEach(hs => {
+    hs.addEventListener('click', () => {
+      const isActive = hs.getAttribute('aria-expanded') === 'true';
+      hotspots.forEach(h => h.setAttribute('aria-expanded', 'false'));
+
+      if (isActive) {
+        hotspotCard.setAttribute('hidden', '');
+        return;
+      }
+
+      hs.setAttribute('aria-expanded', 'true');
+      const data = hotspotData[hs.getAttribute('data-point')];
+      if (data && hotspotCard) {
+        hotspotCardTitle.textContent = data.title;
+        hotspotCardText.textContent = data.text;
+        hotspotCard.removeAttribute('hidden');
+      }
+    });
+  });
+
+  if (hotspotClose && hotspotCard) {
+    hotspotClose.addEventListener('click', () => {
+      hotspotCard.setAttribute('hidden', '');
+      hotspots.forEach(h => h.setAttribute('aria-expanded', 'false'));
+    });
+  }
+
+  /* ---------------------------------------------------------
+     9. ANTES E DEPOIS — comparador com slider
+  --------------------------------------------------------- */
+  const baRange = document.getElementById('baRange');
+  const baAfterWrap = document.getElementById('baAfterWrap');
+  const baHandle = document.getElementById('baHandle');
+
+  function updateBaSlider(value) {
+    if (!baAfterWrap || !baHandle) return;
+    baAfterWrap.style.width = value + '%';
+    baHandle.style.left = value + '%';
+  }
+
+  if (baRange) {
+    updateBaSlider(baRange.value);
+    baRange.addEventListener('input', (e) => updateBaSlider(e.target.value));
+  }
+
+  /* ---------------------------------------------------------
+     10. MATERIAIS — botões "Visualizar"
+  --------------------------------------------------------- */
+  document.querySelectorAll('.resource-btn').forEach(btn => {
+    btn.addEventListener('click', () => showToast('Este material será disponibilizado em breve.'));
+  });
+
+  /* ---------------------------------------------------------
+     11. ENQUETE DA COMUNIDADE
+  --------------------------------------------------------- */
+  const pollForm = document.getElementById('pollForm');
+  const pollFeedback = document.getElementById('pollFeedback');
+
+  if (pollForm) {
+    pollForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const selected = pollForm.querySelector('input[name="poll"]:checked');
+
+      if (!selected) {
+        pollFeedback.textContent = 'Selecione uma opção antes de enviar.';
+        return;
+      }
+
+      const label = selected.closest('.poll-option').textContent.trim();
+      pollFeedback.textContent = `Obrigado! Resposta registrada: "${label}".`;
+      pollForm.reset();
+    });
+  }
+
+  /* ---------------------------------------------------------
+     12. TOAST simples
+  --------------------------------------------------------- */
+  const toast = document.getElementById('toast');
+  let toastTimeout;
+
+  function showToast(message) {
+    if (!toast) return;
+    clearTimeout(toastTimeout);
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    toastTimeout = setTimeout(() => toast.classList.remove('is-visible'), 3200);
+  }
+
+});
+
+</script>
+</body>
+</html>
