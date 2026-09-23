@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>asfaltocerto | Registro de problemas nas ruas</title>
+  <meta name="description" content="Portal informativo e utilitário para registrar buracos, alagamentos, ruas não asfaltadas e outros problemas nas vias de Olinda, Pernambuco.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="asfaltocerto.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo</a>
+
+  <header class="site-header" id="topo">
+    <div class="container header-inner">
+      <a href="#inicio" class="brand" aria-label="Olinda em Ação, página inicial">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="38" height="38">
+            <rect x="1" y="1" width="46" height="46" rx="10" fill="#10283D"/>
+            <path d="M12 32 L18 18 L30 18 L36 32" stroke="#FFC400" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 32 H39" stroke="#F4F5F6" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="24" cy="16" r="3" fill="#FFC400"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong>ASFALTO<br>
+                  CERTO</strong>
+          <small>Melhore sua rua e estrada em que você utiliza todos os dias</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Abrir menu de navegação">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#situacao">Situação</a></li>
+          <li><a href="#categorias">Categorias</a></li>
+          <li><a href="#registrar">Registrar</a></li>
+          <li><a href="#duvidas">Dúvidas</a></li>
+        </ul>
+        <a href="#registrar" class="btn btn-primary nav-cta">Clique aqui para registrar seu problema</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo-principal">
+    <section class="hero" id="inicio" aria-label="Página inicial de Olinda em Ação">
+      <div class="hero-media">
+        <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1800&q=80" alt="Rua e paisagem urbana de Olinda" loading="eager">
+        <div class="hero-scrim" aria-hidden="true"></div>
+      </div>
+
+      <div class="container hero-content reveal">
+        <p class="eyebrow eyebrow-light">Olinda, Pernambuco</p>
+        <h1>Mais segurança, mais mobilidade e ruas melhor tratadas em <span class="accent">Olinda</span>.</h1>
+        <p class="hero-lead">Acompanhe o estado das vias da cidade, conheça os problemas mais comuns e registre buracos, alagamentos, ruas não asfaltadas e qualquer situação que afete a mobilidade da sua região.</p>
+        <div class="hero-actions">
+          <a href="#registrar" class="btn btn-primary">Clique aqui para registrar seu problema</a>
+          <a href="#categorias" class="btn btn-outline">Ver categorias</a>
+        </div>
+      </div>
+
+      <div class="hero-indicators">
+        <div class="container hero-indicators-grid">
+          <div class="indicator reveal">
+            <span class="indicator-num">01</span>
+            <h3>Buracos</h3>
+            <p>Risco para pedestres, ciclistas e motoristas.</p>
+          </div>
+          <div class="indicator reveal">
+            <span class="indicator-num">02</span>
+            <h3>Alagamentos</h3>
+            <p>Água em excesso prejudica a drenagem e a mobilidade.</p>
+          </div>
+          <div class="indicator reveal">
+            <span class="indicator-num">03</span>
+            <h3>Ruas não asfaltadas</h3>
+            <p>Problema que afeta acesso e conforto urbano.</p>
+          </div>
+          <div class="indicator reveal">
+            <span class="indicator-num">04</span>
+            <h3>Manutenção</h3>
+            <p>Intervenções mais rápidas melhoram a cidade.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="situacao" aria-labelledby="situacao-title">
+      <div class="container info-grid">
+        <div class="section-head reveal">
+          <p class="eyebrow">Situação da cidade</p>
+          <h2 id="situacao-title">As ruas de Olinda precisam ser vistas com atenção.</h2>
+          <p class="section-lead">Problemas em pavimentos, drenagem e mobilidade não afetam apenas a circulação. Eles também influenciam segurança, acesso a serviços e qualidade de vida dos moradores.</p>
+        </div>
+
+        <div class="status-panel reveal">
+          <div class="status-box">
+            <strong>+120</strong>
+            <span>Registros em análise</span>
+          </div>
+          <div class="status-box">
+            <strong>08 bairros</strong>
+            <span>Com demandas prioritárias</span>
+          </div>
+          <div class="status-box">
+            <strong>48h</strong>
+            <span>Prazo de resposta para urgências</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tinted" id="categorias" aria-labelledby="categorias-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Categorias</p>
+          <h2 id="categorias-title">Quais problemas podem ser reportados?</h2>
+        </div>
+
+        <div class="category-grid">
+          <article class="category-card reveal">
+            <span class="category-icon" aria-hidden="true">🕳️</span>
+            <h3>Buraco</h3>
+            <p>Depressão no asfalto ou pavimento que coloca em risco motoristas, pedestres e ciclistas.</p>
+            <a href="#registrar" class="text-link">Reportar problema</a>
+          </article>
+
+          <article class="category-card reveal">
+            <span class="category-icon" aria-hidden="true">🚰</span>
+            <h3>Alagamento</h3>
+            <p>Água acumulada em vias, que prejudica a circulação, a drenagem e a segurança local.</p>
+            <a href="#registrar" class="text-link">Reportar problema</a>
+          </article>
+
+          <article class="category-card reveal">
+            <span class="category-icon" aria-hidden="true">🛣️</span>
+            <h3>Rua não asfaltada</h3>
+            <p>Trechos sem pavimento adequado, com poeira, dificuldades de acesso e risco ao trânsito.</p>
+            <a href="#registrar" class="text-link">Reportar problema</a>
+          </article>
+
+          <article class="category-card reveal">
+            <span class="category-icon" aria-hidden="true">💧</span>
+            <h3>Drenagem</h3>
+            <p>Entupimento, falta de escoamento ou canalização inadequada que agrava o problema da água.</p>
+            <a href="#registrar" class="text-link">Reportar problema</a>
+          </article>
+
+          <article class="category-card reveal">
+            <span class="category-icon" aria-hidden="true">🚧</span>
+            <h3>Sinalização</h3>
+            <p>Falta de faixas, placas ou demarcações que deixam a rua insegura para os usuários.</p>
+            <a href="#registrar" class="text-link">Reportar problema</a>
+          </article>
+
+          <article class="category-card reveal">
+            <span class="category-icon" aria-hidden="true">🧱</span>
+            <h3>Calçada e passeio</h3>
+            <p>Vias com trechos irregulares, escorregadios ou quebrados, comprometendo a circulação.</p>
+            <a href="#registrar" class="text-link">Reportar problema</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="registrar" aria-labelledby="registrar-title">
+      <div class="container report-layout">
+        <div class="report-copy reveal">
+          <p class="eyebrow">Registrar problema</p>
+          <h2 id="registrar-title">Conte para a cidade o que está acontecendo na sua rua.</h2>
+          <p class="section-lead">Relate o que você viu com foto, categoria, bairro e tempo em que o problema existe. Essa informação ajuda a priorizar a manutenção nas áreas mais afetadas.</p>
+
+          <ul class="report-checklist">
+            <li>Selecione a categoria do problema</li>
+            <li>Adicione fotos do local afetado</li>
+            <li>Informe há quanto tempo o problema está presente</li>
+            <li>Indique o bairro ou endereço aproximado</li>
+          </ul>
+
+          <a href="#duvidas" class="btn btn-outline btn-dark">Como funciona?</a>
+        </div>
+
+        <form class="report-form reveal" id="problemForm">
+          <div class="field-grid">
+            <label class="field">
+              <span>Seu nome</span>
+              <input type="text" name="reportName" id="reportName" placeholder="Digite seu nome" required>
+            </label>
+
+            <label class="field">
+              <span>Bairro ou local</span>
+              <input type="text" name="reportArea" id="reportArea" placeholder="Ex.: Bairro do Carmo" required>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Categoria do problema</span>
+            <select name="reportCategory" id="reportCategory" required>
+              <option value="">Selecione</option>
+              <option value="Buraco">Buraco</option>
+              <option value="Alagamento">Alagamento</option>
+              <option value="Rua não asfaltada">Rua não asfaltada</option>
+              <option value="Drenagem">Drenagem</option>
+              <option value="Sinalização">Sinalização</option>
+              <option value="Calçada e passeio">Calçada e passeio</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Há quanto tempo o problema está presente?</span>
+            <select name="reportTime" id="reportTime" required>
+              <option value="">Selecione</option>
+              <option value="Menos de 1 semana">Menos de 1 semana</option>
+              <option value="1 a 4 semanas">1 a 4 semanas</option>
+              <option value="1 a 6 meses">1 a 6 meses</option>
+              <option value="Mais de 6 meses">Mais de 6 meses</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Descreva o problema</span>
+            <textarea name="reportDescription" id="reportDescription" rows="4" placeholder="Descreva o local, a gravidade e o que foi observado." required></textarea>
+          </label>
+
+          <label class="field file-field">
+            <span>Adicionar foto do problema</span>
+            <input type="file" id="reportPhoto" accept="image/*">
+          </label>
+
+          <div class="image-preview" id="imagePreview" aria-live="polite">
+            <p>Nenhuma foto selecionada.</p>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" name="reportUrgent" id="reportUrgent">
+            <span>É uma situação urgente e exige atenção imediata.</span>
+          </label>
+
+          <button type="submit" class="btn btn-primary submit-btn">Enviar relato para Olinda</button>
+          <p class="form-feedback" id="formFeedback" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="duvidas" aria-labelledby="duvidas-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Como funciona</p>
+          <h2 id="duvidas-title">Tudo em uma rotina simples para a cidade.</h2>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card reveal">
+            <span class="step-number">1</span>
+            <h3>Identifique</h3>
+            <p>Veja se o problema é um buraco, alagamento, rua sem asfalto, drenagem ou outra situação.</p>
+          </div>
+          <div class="step-card reveal">
+            <span class="step-number">2</span>
+            <h3>Registre</h3>
+            <p>Preencha o formulário com o bairro, categoria, tempo e descrição detalhada da situação.</p>
+          </div>
+          <div class="step-card reveal">
+            <span class="step-number">3</span>
+            <h3>Envie a foto</h3>
+            <p>Inclua uma imagem para ajudar a entender a gravidade e a localização do problema na rua.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="bairros-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Regiões da cidade</p>
+          <h2 id="bairros-title">Olinda possui bairros com demandas diferentes.</h2>
+        </div>
+
+        <div class="bairro-grid">
+          <div class="bairro-card reveal"><strong>Alto da Sé</strong><span>Trânsito, acesso e pavimento</span></div>
+          <div class="bairro-card reveal"><strong>Varadouro</strong><span>Alagamentos e drenagem</span></div>
+          <div class="bairro-card reveal"><strong>Casa Caiada</strong><span>Ruas sem asfalto e manutenção</span></div>
+          <div class="bairro-card reveal"><strong>Guadalupe</strong><span>Buracos e pavimentação</span></div>
+          <div class="bairro-card reveal"><strong>Rio Doce</strong><span>Drenagem e acessibilidade</span></div>
+          <div class="bairro-card reveal"><strong>Amparo</strong><span>Segurança viária e limpeza</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-banner reveal" aria-labelledby="final-title">
+      <img src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1800&q=80" alt="Paisagem urbana de Olinda durante o dia" loading="lazy">
+      <div class="final-scrim" aria-hidden="true"></div>
+      <div class="container final-content">
+        <p class="eyebrow eyebrow-light">Cidade mais segura</p>
+        <h2 id="final-title">Uma Olinda melhor começa na atenção às ruas.</h2>
+        <p>Quando o problema é reportado com clareza, a cidade consegue agir com mais rapidez e prioridade.</p>
+        <div class="final-actions">
+          <a href="#registrar" class="btn btn-primary">Registrar meu problema</a>
+          <a href="#inicio" class="btn btn-outline">Voltar ao início</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <strong>OLINDA EM AÇÃO</strong>
+        <p>Informativo e utilitário sobre ruas, pavimentos e infraestrutura da cidade.</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Links do rodapé">
+        <a href="#inicio">Início</a>
+        <a href="#situacao">Situação</a>
+        <a href="#categorias">Categorias</a>
+        <a href="#registrar">Registrar</a>
+      </nav>
+
+      <p class="footer-note">Focado exclusivamente em Olinda, Pernambuco.</p>
+    </div>
+  </footer>
+
+  <button type="button" class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="asfaltocerto.js"></script>
+</body>
+</html>
